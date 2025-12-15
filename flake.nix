@@ -407,15 +407,24 @@
                 echo "[postInstall] No package.xml found" >&2
               fi
 
-              # Copy node.launch.py (standard launch file name)
+              # Copy launch files - try both naming conventions
+              # 1. node.launch.py (standard name)
               if [ -f ${pkgPath}/node.launch.py ]; then
                 echo "[postInstall] Copying node.launch.py" >&2
                 cp ${pkgPath}/node.launch.py $out/share/$pkg/
               else
-                echo "[postInstall] No node.launch.py found at ${pkgPath}/node.launch.py" >&2
+                echo "[postInstall] No node.launch.py found" >&2
               fi
 
-              # Copy entire launch directory if it exists
+              # 2. $pkg.launch.py (package-named launch file, e.g., webrtc.launch.py)
+              if [ -f ${pkgPath}/$pkg.launch.py ]; then
+                echo "[postInstall] Copying $pkg.launch.py" >&2
+                cp ${pkgPath}/$pkg.launch.py $out/share/$pkg/
+              else
+                echo "[postInstall] No $pkg.launch.py found" >&2
+              fi
+
+              # 3. Copy entire launch directory if it exists
               if [ -d ${pkgPath}/launch ]; then
                 echo "[postInstall] Copying launch directory" >&2
                 cp -r ${pkgPath}/launch $out/share/$pkg/
