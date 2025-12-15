@@ -398,9 +398,11 @@
               if [ -f ${pkgPath}/package.xml ]; then
                 cp ${pkgPath}/package.xml $out/share/$pkg/
               fi
-              if [ -f ${pkgPath}/$pkg.launch.py ]; then
-                cp ${pkgPath}/$pkg.launch.py $out/share/$pkg/
+              # Copy node.launch.py (standard launch file name)
+              if [ -f ${pkgPath}/node.launch.py ]; then
+                cp ${pkgPath}/node.launch.py $out/share/$pkg/
               fi
+              # Copy entire launch directory if it exists
               if [ -d ${pkgPath}/launch ]; then
                 cp -r ${pkgPath}/launch $out/share/$pkg/
               fi
