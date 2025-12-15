@@ -389,6 +389,11 @@
               set -euo pipefail
               pkg="${pkgName}"
 
+              echo "[postInstall] Processing package: $pkg" >&2
+              echo "[postInstall] Package source path: ${pkgPath}" >&2
+              echo "[postInstall] Listing package source contents:" >&2
+              ls -la ${pkgPath}/ >&2 || true
+
               # 1: ament index registration
               mkdir -p $out/share/ament_index/resource_index/packages
               echo "$pkg" > $out/share/ament_index/resource_index/packages/$pkg
@@ -396,23 +401,38 @@
               # 2: package share (package.xml + launch)
               mkdir -p $out/share/$pkg/
               if [ -f ${pkgPath}/package.xml ]; then
+                echo "[postInstall] Copying package.xml" >&2
                 cp ${pkgPath}/package.xml $out/share/$pkg/
+              else
+                echo "[postInstall] No package.xml found" >&2
               fi
+
               # Copy node.launch.py (standard launch file name)
               if [ -f ${pkgPath}/node.launch.py ]; then
+                echo "[postInstall] Copying node.launch.py" >&2
                 cp ${pkgPath}/node.launch.py $out/share/$pkg/
+              else
+                echo "[postInstall] No node.launch.py found at ${pkgPath}/node.launch.py" >&2
               fi
+
               # Copy entire launch directory if it exists
               if [ -d ${pkgPath}/launch ]; then
+                echo "[postInstall] Copying launch directory" >&2
                 cp -r ${pkgPath}/launch $out/share/$pkg/
+              else
+                echo "[postInstall] No launch directory found" >&2
               fi
 
               # Resource marker(s)
               if [ -f ${pkgPath}/resource/$pkg ]; then
+                echo "[postInstall] Copying resource marker file" >&2
                 install -Dm644 ${pkgPath}/resource/$pkg $out/share/$pkg/resource/$pkg
               elif [ -d ${pkgPath}/resource ]; then
+                echo "[postInstall] Copying resource directory" >&2
                 mkdir -p $out/share/$pkg/resource
                 cp -r ${pkgPath}/resource/* $out/share/$pkg/resource/ || true
+              else
+                echo "[postInstall] No resource marker or directory found" >&2
               fi
 
               # 3: libexec shim so launch_ros finds the executable under lib/$pkg/$pkg_node
@@ -422,6 +442,9 @@
 exec ${pkgs.python3}/bin/python3 -m ${pkgName}.node "\$@"
 EOF
               chmod +x $out/lib/$pkg/''${pkg}_node
+
+              echo "[postInstall] Final package share directory contents:" >&2
+              ls -la $out/share/$pkg/ >&2 || true
             '';
           }
         ) packageDirs;
