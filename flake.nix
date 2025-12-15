@@ -390,9 +390,9 @@
               pkg="${pkgName}"
 
               echo "[postInstall] Processing package: $pkg" >&2
-              echo "[postInstall] Package source path: ${pkgPath}" >&2
-              echo "[postInstall] Listing package source contents:" >&2
-              ls -la ${pkgPath}/ >&2 || true
+              echo "[postInstall] Build directory (PWD): $PWD" >&2
+              echo "[postInstall] Listing build directory contents:" >&2
+              ls -la . >&2 || true
 
               # 1: ament index registration
               mkdir -p $out/share/ament_index/resource_index/packages
@@ -400,46 +400,46 @@
 
               # 2: package share (package.xml + launch)
               mkdir -p $out/share/$pkg/
-              if [ -f ${pkgPath}/package.xml ]; then
+              if [ -f package.xml ]; then
                 echo "[postInstall] Copying package.xml" >&2
-                cp ${pkgPath}/package.xml $out/share/$pkg/
+                cp package.xml $out/share/$pkg/
               else
                 echo "[postInstall] No package.xml found" >&2
               fi
 
               # Copy launch files - try both naming conventions
               # 1. node.launch.py (standard name)
-              if [ -f ${pkgPath}/node.launch.py ]; then
+              if [ -f node.launch.py ]; then
                 echo "[postInstall] Copying node.launch.py" >&2
-                cp ${pkgPath}/node.launch.py $out/share/$pkg/
+                cp node.launch.py $out/share/$pkg/
               else
                 echo "[postInstall] No node.launch.py found" >&2
               fi
 
               # 2. $pkg.launch.py (package-named launch file, e.g., webrtc.launch.py)
-              if [ -f ${pkgPath}/$pkg.launch.py ]; then
+              if [ -f $pkg.launch.py ]; then
                 echo "[postInstall] Copying $pkg.launch.py" >&2
-                cp ${pkgPath}/$pkg.launch.py $out/share/$pkg/
+                cp $pkg.launch.py $out/share/$pkg/
               else
                 echo "[postInstall] No $pkg.launch.py found" >&2
               fi
 
               # 3. Copy entire launch directory if it exists
-              if [ -d ${pkgPath}/launch ]; then
+              if [ -d launch ]; then
                 echo "[postInstall] Copying launch directory" >&2
-                cp -r ${pkgPath}/launch $out/share/$pkg/
+                cp -r launch $out/share/$pkg/
               else
                 echo "[postInstall] No launch directory found" >&2
               fi
 
               # Resource marker(s)
-              if [ -f ${pkgPath}/resource/$pkg ]; then
+              if [ -f resource/$pkg ]; then
                 echo "[postInstall] Copying resource marker file" >&2
-                install -Dm644 ${pkgPath}/resource/$pkg $out/share/$pkg/resource/$pkg
-              elif [ -d ${pkgPath}/resource ]; then
+                install -Dm644 resource/$pkg $out/share/$pkg/resource/$pkg
+              elif [ -d resource ]; then
                 echo "[postInstall] Copying resource directory" >&2
                 mkdir -p $out/share/$pkg/resource
-                cp -r ${pkgPath}/resource/* $out/share/$pkg/resource/ || true
+                cp -r resource/* $out/share/$pkg/resource/ || true
               else
                 echo "[postInstall] No resource marker or directory found" >&2
               fi
