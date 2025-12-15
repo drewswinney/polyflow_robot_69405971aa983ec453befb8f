@@ -66,6 +66,8 @@ let
     stdMsgs
     yaml
     sensorMsgs
+    # Add python packages that ROS packages depend on
+    pkgs.python3Packages.numpy
   ];
 
   rosPy = pkgs.rosPackages.humble.python3;
