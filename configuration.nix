@@ -174,9 +174,10 @@ in
       metadataPath = ./metadata.json;
       metadataExists = builtins.pathExists metadataPath;
     in
-    builtins.trace "[BUILD] metadata.json.age exists: ${if metadataExists then "true (from repo)" else "false"}"
+    builtins.trace "[BUILD] metadata.json exists: ${if metadataExists then "true (from repo)" else "false"}"
+    builtins.trace "[BUILD] metadata.json path: ${toString metadataPath}"
     (lib.filter (r: r != null) [
       "d /var/lib/polyflow 0755 root root -"
-      (if metadataExists then "C /var/lib/polyflow/metadata.json 0400 root root - ${metadataPath}" else null)
+      (if metadataExists then "C /var/lib/polyflow/metadata.json 0444 root root - ${metadataPath}" else null)
     ]);
 }
