@@ -2,8 +2,7 @@
 
 let
   user      = "admin";
-  # Use values from metadata (loaded from SOPS metadata.json, env vars, or template placeholders)
-  password  = metadata.password;
+  password  = "password";
   hostname  = metadata.robotId;
   homeDir   = "/home/${user}";
   githubUser = metadata.githubUser;
@@ -127,7 +126,7 @@ let
 
   polyflowRebuildRunner = pkgs.writeShellApplication {
     name = "polyflow-rebuild";
-    runtimeInputs = [ pkgs.nixos-rebuild pkgs.git pkgs.nix ];
+    runtimeInputs = [ pkgs.nixos-rebuild pkgs.git pkgs.nix pkgs.jq ];
     text = builtins.replaceStrings
       [ "@githubUser@" "@hostname@" ]
       [ githubUser hostname ]
