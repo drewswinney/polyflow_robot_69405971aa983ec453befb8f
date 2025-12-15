@@ -52,11 +52,26 @@ if printf '%s' "$ROBOT_ID" | grep -qE '[[:space:]]'; then
   exit 1
 fi
 
-FLAKE_REF="github:${GITHUB_USER}/polyflow_robot_${ROBOT_ID}#rpi4"
+GITHUB_REPO="polyflow_robot_${ROBOT_ID}"
+WORK_DIR="/tmp/polyflow-rebuild"
+REPO_DIR="$WORK_DIR/$GITHUB_REPO"
 
-echo "[polyflow-rebuild] Rebuilding from $FLAKE_REF" >&2
+echo "[polyflow-rebuild] Fetching latest from github:${GITHUB_USER}/${GITHUB_REPO}" >&2
 
-# Use --tarball-ttl 0 to bypass GitHub tarball cache and fetch the latest commit
-# This ensures we get the most recent version from the repository
+# Clean up any previous checkout
+rm -rf "$WORK_DIR"
+mkdir -p "$WORK_DIR"
+
+# Clone the repository (shallow clone for speed)
+if ! git clone --depth 1 "https://github.com/${GITHUB_USER}/${GITHUB_REPO}.git" "$REPO_DIR"; then
+  echo "[polyflow-rebuild] Failed to clone repository" >&2
+  exit 1
+fi
+
+cd "$REPO_DIR"
+
+echo "[polyflow-rebuild] Building from local checkout with ROBOT_ID=$ROBOT_ID, GITHUB_USER=$GITHUB_USER" >&2
+
+# Rebuild from local flake (environment variables are now accessible)
 # Add -L to show build logs in real-time
-exec nixos-rebuild switch --flake "$FLAKE_REF" --refresh --option tarball-ttl 0 -L
+exec nixos-rebuild switch --flake ".#rpi4" -L
