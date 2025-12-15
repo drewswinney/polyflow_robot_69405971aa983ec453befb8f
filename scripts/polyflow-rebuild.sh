@@ -56,4 +56,7 @@ FLAKE_REF="github:${GITHUB_USER}/polyflow_robot_${ROBOT_ID}#rpi4"
 
 echo "[polyflow-rebuild] Rebuilding from $FLAKE_REF" >&2
 
-exec nixos-rebuild switch --flake "$FLAKE_REF" --refresh
+# Use --tarball-ttl 0 to bypass GitHub tarball cache and fetch the latest commit
+# This ensures we get the most recent version from the repository
+# Add -L to show build logs in real-time
+exec nixos-rebuild switch --flake "$FLAKE_REF" --refresh --option tarball-ttl 0 -L
