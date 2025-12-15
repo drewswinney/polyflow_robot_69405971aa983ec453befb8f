@@ -38,6 +38,7 @@ let
   rosgraphMsgs = rosPkgs."rosgraph-msgs";
   stdMsgs = rosPkgs."std-msgs";
   sensorMsgs = rosPkgs."sensor-msgs";
+  trajectoryMsgs = rosPkgs."trajectory-msgs";
 
   rosRuntimePackages = [
     ros2pkg
@@ -66,6 +67,7 @@ let
     stdMsgs
     yaml
     sensorMsgs
+    trajectoryMsgs
     # Add python packages that ROS packages depend on
     pkgs.python3Packages.numpy
   ];
