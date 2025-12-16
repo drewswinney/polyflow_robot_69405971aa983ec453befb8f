@@ -59,4 +59,5 @@ echo "[polyflow-rebuild] Rebuilding from $FLAKE_REF with ROBOT_ID=$ROBOT_ID, GIT
 # Use --impure to allow flake evaluation to access environment variables (ROBOT_ID, GITHUB_USER)
 # Use --refresh and --tarball-ttl 0 to bypass GitHub tarball cache and fetch the latest commit
 # Add -L to show build logs in real-time
-exec nixos-rebuild switch --impure --flake "$FLAKE_REF" --refresh --option tarball-ttl 0 -L
+# Explicitly pass environment variables to ensure they're available during flake evaluation
+exec env ROBOT_ID="$ROBOT_ID" GITHUB_USER="$GITHUB_USER" nixos-rebuild switch --impure --flake "$FLAKE_REF" --refresh --option tarball-ttl 0 -L
