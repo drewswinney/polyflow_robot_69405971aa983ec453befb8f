@@ -4,7 +4,8 @@ logging {
 
 loki.relabel "journal_to_service" {
   forward_to = []
-  
+
+  // Extract service name from systemd unit (e.g., "foo.service" -> "foo")
   rule {
     action        = "replace"
     source_labels = ["__journal__systemd_unit"]
@@ -13,10 +14,14 @@ loki.relabel "journal_to_service" {
     replacement   = "$1"
   }
 
+  // Fallback to syslog identifier only if systemd_unit didn't match
   rule {
     action        = "replace"
-    source_labels = ["__journal_syslog_identifier"]
+    source_labels = ["__journal__systemd_unit", "__journal_syslog_identifier"]
+    separator     = ";"
     target_label  = "service"
+    regex         = "^;(.+)$"
+    replacement   = "$1"
   }
 }
 
