@@ -33,14 +33,12 @@
     pyproject-build-systems.inputs.pyproject-nix.follows = "pyproject-nix";
     pyproject-build-systems.inputs.uv2nix.follows = "uv2nix";
     pyproject-build-systems.inputs.nixpkgs.follows = "nixpkgs";
-    sops-nix.url = "github:Mic92/sops-nix";
-    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   ##############################################################################
   # Outputs
   ##############################################################################
-  outputs = { self, nixpkgs, nixos-hardware, nix-ros-workspace, nix-ros-overlay, polyflowRos, pyproject-nix, uv2nix, pyproject-build-systems, sops-nix, ... }:
+  outputs = { self, nixpkgs, nixos-hardware, nix-ros-workspace, nix-ros-overlay, polyflowRos, pyproject-nix, uv2nix, pyproject-build-systems, ... }:
   let
     ##############################################################################
     # System target and overlays
@@ -106,7 +104,6 @@
             if envValue != "" then envValue else default;
       in {
         # Use valid defaults that satisfy NixOS validation
-        # Runtime secrets are handled by sops-nix (see configuration.nix)
         robotId = getValue "ROBOT_ID" "polyflow-robot";
         signalingUrl = getValue "SIGNALING_URL" "wss://example.com";
         password = getValue "PASSWORD" "changeme";
@@ -580,7 +577,6 @@ EOF
             nixpkgs.overlays =
               rosOverlays ++ [ rosWorkspaceOverlay pinPython312 ];
           })
-          sops-nix.nixosModules.sops
           nixos-hardware.nixosModules.raspberry-pi-4
           ./configuration.nix
         ];
