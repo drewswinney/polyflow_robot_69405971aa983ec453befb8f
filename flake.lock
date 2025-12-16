@@ -3,11 +3,11 @@
     "nix-ros-overlay": {
       "flake": false,
       "locked": {
-        "lastModified": 1765556412,
-        "narHash": "sha256-A22gqDPMyCHGcYGDpKU0XzDwg1/mjj/HcLwXdsxanSA=",
+        "lastModified": 1765614839,
+        "narHash": "sha256-2eC5GsOlQyfkZTaZ0UzMEL64FZXudjvOcpnvM/3DvFw=",
         "owner": "lopsided98",
         "repo": "nix-ros-overlay",
-        "rev": "3166e1d4f12f7f96b35dbb7f5ffb6bf33703f2cb",
+        "rev": "51144d349de66dd00216d2cfade1bf86692ba4f4",
         "type": "github"
       },
       "original": {
@@ -66,11 +66,11 @@
     "polyflowRos": {
       "flake": false,
       "locked": {
-        "lastModified": 1765565962,
-        "narHash": "sha256-rF1h5AczcGBOKPCBTok6TvRwOVwQjn/Texbp9//T2pc=",
+        "lastModified": 1765850130,
+        "narHash": "sha256-WspihUn7t3K4p1bQZmwLrOrVSocoSuuxPIIk7bqam4s=",
         "owner": "polyflowrobotics",
         "repo": "polyflow-ros",
-        "rev": "7faf9fbe36baaa5ee0c2987db3185058fc729f4c",
+        "rev": "c11e61aa1f37854a231f40027f8257f6d55cd10b",
         "type": "github"
       },
       "original": {
@@ -134,28 +134,7 @@
         "polyflowRos": "polyflowRos",
         "pyproject-build-systems": "pyproject-build-systems",
         "pyproject-nix": "pyproject-nix",
-        "sops-nix": "sops-nix",
         "uv2nix": "uv2nix"
-      }
-    },
-    "sops-nix": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1765553226,
-        "narHash": "sha256-Ii16Nq5jL2wURXpV3D3tOM3vPpbKh18roHLkyZCHK4Q=",
-        "owner": "Mic92",
-        "repo": "sops-nix",
-        "rev": "496a6f625f63b780ce849891868f2fad22fd49c6",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Mic92",
-        "repo": "sops-nix",
-        "type": "github"
       }
     },
     "uv2nix": {
@@ -168,11 +147,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1764992234,
-        "narHash": "sha256-qBbyM1Gnvs/ncbnWfbBboMyevelz+owIdSN5Sg89wzw=",
+        "lastModified": 1765631794,
+        "narHash": "sha256-90d//IZ4GXipNsngO4sb2SAPbIC/a2P+IAdAWOwpcOM=",
         "owner": "pyproject-nix",
         "repo": "uv2nix",
-        "rev": "1610e554e579c3d47b47c8a32d47042116d0e153",
+        "rev": "4cca323a547a1aaa9b94929c4901bed5343eafe8",
         "type": "github"
       },
       "original": {
